@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
-import './App.css';
 import AnimalCard from './components/AnimalCard';
+import './App.css';
 
 
 function App() {
