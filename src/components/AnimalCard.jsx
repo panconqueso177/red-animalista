@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function AnimalCard({ animal }) {
+function AnimalCard({ animal, ocultarFotos }) {
   // Estado para controlar si la ventana emergente (modal) está abierta o cerrada
   const [modalAbierto, setModalAbierto] = useState(false);
 
@@ -11,10 +11,13 @@ function AnimalCard({ animal }) {
     <>
       {/* --- TARJETA PRINCIPAL --- */}
       <div className="card">
-        <img 
-          src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'} 
-          alt={`Foto de ${animal.nombre}`} 
-        />
+        {/* El condicional: Si ocultarFotos es falso, muestra la imagen */}
+        {!ocultarFotos && (
+          <img 
+            src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'} 
+            alt={`Foto de ${animal.nombre}`} 
+          />
+        )}
         <div className="card-content">
           <h3>{animal.nombre}</h3>
           <p><strong>{animal.especie}</strong> • {animal.edad}</p>
@@ -25,19 +28,20 @@ function AnimalCard({ animal }) {
       </div>
 
       {/* --- VENTANA EMERGENTE (Modal) --- */}
-      {/* Si modalAbierto es 'true', se renderiza todo este bloque */}
       {modalAbierto && (
         <div className="modal-overlay" onClick={cerrarModal}>
-          {/* El stopPropagation evita que la ventana se cierre si haces clic dentro del cuadro blanco */}
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-btn" onClick={cerrarModal}>✖</button>
             
             <div className="modal-body">
-              <img 
-                src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'} 
-                alt={animal.nombre} 
-                className="modal-img"
-              />
+              {/* El mismo condicional para la foto grande del modal */}
+              {!ocultarFotos && (
+                <img 
+                  src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'} 
+                  alt={animal.nombre} 
+                  className="modal-img"
+                />
+              )}
               <div className="modal-info">
                 <h2>{animal.nombre}</h2>
                 <div className="tags">
