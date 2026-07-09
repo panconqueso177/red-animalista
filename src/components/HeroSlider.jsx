@@ -16,9 +16,9 @@ function HeroSlider() {
     {
       id: 1,
       titulo: "📍 Visítanos en nuestro evento",
-      descripcion: "Estaremos todo agosto con nuestra carpa recibiendo donaciones físicas, vendiendo cositas y dando peluditos en adopción.",
+      descripcion: "Estaremos este agosto con nuestra carpa recibiendo donaciones físicas, vendiendo cositas y dando peluditos en adopción.",
       // PON LA UBICACIÓN EXACTA O LINK DE GOOGLE MAPS AQUÍ:
-      infoExtra: "Ubicación: Plaza Central de Manta. ¡Te esperamos todos los fines de semana de agosto!",
+      infoExtra: "Ubicación: Por ahi lol esto es una prueba. ¡Te esperamos este agosto!",
       colorFondo: "#154034"
     },
     {
