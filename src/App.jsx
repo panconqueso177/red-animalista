@@ -32,7 +32,7 @@ function App() {
       {/* Barra de Navegación con Logo */}
       <nav className="navbar">
         <img src="/logo.png" alt="Logo Red Animalista" className="logo" />
-        <h1 className="brand-title">RAM</h1>
+        <h1 className="brand-title">Red Animalista de Manta</h1>
       </nav>
 
       {/* Banner Principal */}
