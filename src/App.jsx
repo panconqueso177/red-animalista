@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 import './App.css';
+import AnimalCard from './components/AnimalCard';
+
 
 function App() {
   const [animalitos, setAnimalitos] = useState([]);
@@ -50,22 +52,9 @@ function App() {
         ) : animalitos.length === 0 ? (
           <p style={{ textAlign: 'center' }}>Por el momento no hay animalitos registrados. ¡Pronto añadiremos más!</p>
         ) : (
-          <div className="grid">
+<div className="grid">
             {animalitos.map((animal) => (
-              <div key={animal.id} className="card">
-                <img 
-                  src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'} 
-                  alt={`Foto de ${animal.nombre}`} 
-                />
-                <div className="card-content">
-                  <h3>{animal.nombre}</h3>
-                  <p><strong>{animal.especie}</strong> • {animal.edad}</p>
-                  <p style={{ fontSize: '14px', color: '#666' }}>{animal.descripcion}</p>
-                  <button className="btn" onClick={() => alert(`¡Gracias por tu interés en ${animal.nombre}! Comunícate con la Red Animalista.`)}>
-                    Quiero Adoptarlo
-                  </button>
-                </div>
-              </div>
+              <AnimalCard key={animal.id} animal={animal} />
             ))}
           </div>
         )}
