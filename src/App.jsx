@@ -8,32 +8,31 @@ function App() {
   const [animalitos, setAnimalitos] = useState([]);
   const [cargando, setCargando] = useState(true);
 
-  // --- ESTADOS DE CONFIGURACIÓN (Con memoria LocalStorage) ---
+  // --- ESTADO DEL FILTRO ---
+  // Por defecto, queremos que se muestren "Todos"
+  const [filtroEspecie, setFiltroEspecie] = useState('Todos');
+
+  // --- ESTADOS DE CONFIGURACIÓN ---
   const [modoOscuro, setModoOscuro] = useState(() => localStorage.getItem('tema') === 'oscuro');
   const [ocultarFotos, setOcultarFotos] = useState(() => localStorage.getItem('fotos') === 'ocultas');
   const [letraGrande, setLetraGrande] = useState(() => localStorage.getItem('letra') === 'grande');
 
-  // --- EFECTOS PARA APLICAR LA CONFIGURACIÓN ---
   useEffect(() => {
-    // Guarda y aplica el modo oscuro en el <body>
     localStorage.setItem('tema', modoOscuro ? 'oscuro' : 'claro');
     if (modoOscuro) document.body.classList.add('dark-mode');
     else document.body.classList.remove('dark-mode');
   }, [modoOscuro]);
 
   useEffect(() => {
-    // Guarda y aplica el tamaño de letra en el <html>
     localStorage.setItem('letra', letraGrande ? 'grande' : 'normal');
     if (letraGrande) document.documentElement.style.fontSize = '20px';
     else document.documentElement.style.fontSize = '16px';
   }, [letraGrande]);
 
   useEffect(() => {
-    // Solo guarda la preferencia de fotos
     localStorage.setItem('fotos', ocultarFotos ? 'ocultas' : 'visibles');
   }, [ocultarFotos]);
 
-  // --- CARGA DE ANIMALITOS ---
   const obtenerAnimales = async () => {
     try {
       setCargando(true);
@@ -51,12 +50,20 @@ function App() {
     obtenerAnimales();
   }, []);
 
+  // --- LÓGICA MÁGICA DEL FILTRO ---
+  // Creamos una nueva lista temporal dependiendo del botón presionado
+  const animalitosFiltrados = animalitos.filter((animal) => {
+    if (filtroEspecie === 'Todos') return true;
+    
+    // Convertimos todo a minúsculas por si en Supabase escribieron "Perro", "PERRO" o "perro"
+    return animal.especie.toLowerCase() === filtroEspecie.toLowerCase();
+  });
+
   return (
     <div>
       <nav className="navbar">
         <img src="/logo.png" alt="Logo Red Animalista" className="logo" />
         <h1 className="brand-title">Red Animalista de Manta</h1>
-        {/* Aquí inyectamos el menú y le pasamos los controles */}
         <ConfigMenu 
           modoOscuro={modoOscuro} setModoOscuro={setModoOscuro}
           ocultarFotos={ocultarFotos} setOcultarFotos={setOcultarFotos}
@@ -71,14 +78,37 @@ function App() {
 
       <main className="container">
         <h2 className="section-title">Animalitos en Adopción</h2>
+
+        {/* --- BOTONES DE FILTRO --- */}
+        <div className="filtros-container">
+          <button 
+            className={`btn-filtro ${filtroEspecie === 'Todos' ? 'activo' : ''}`} 
+            onClick={() => setFiltroEspecie('Todos')}
+          >
+            Todos
+          </button>
+          <button 
+            className={`btn-filtro ${filtroEspecie === 'Perro' ? 'activo' : ''}`} 
+            onClick={() => setFiltroEspecie('Perro')}
+          >
+            Perritos
+          </button>
+          <button 
+            className={`btn-filtro ${filtroEspecie === 'Gato' ? 'activo' : ''}`} 
+            onClick={() => setFiltroEspecie('Gato')}
+          >
+            Gatitos
+          </button>
+        </div>
+
         {cargando ? (
           <p style={{ textAlign: 'center' }}>Buscando peluditos...</p>
-        ) : animalitos.length === 0 ? (
-          <p style={{ textAlign: 'center' }}>Por el momento no hay animalitos registrados.</p>
+        ) : animalitosFiltrados.length === 0 ? (
+          <p style={{ textAlign: 'center' }}>No hay peluditos en esta categoría por ahora.</p>
         ) : (
           <div className="grid">
-            {animalitos.map((animal) => (
-              // Le pasamos la preferencia de ocultarFotos a la tarjeta
+            {/* Dibujamos la lista filtrada, NO la lista original */}
+            {animalitosFiltrados.map((animal) => (
               <AnimalCard key={animal.id} animal={animal} ocultarFotos={ocultarFotos} />
             ))}
           </div>

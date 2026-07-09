@@ -316,3 +316,49 @@ body.dark-mode .badge {
   background-color: #2a2a2a;
   color: #4ade80;
 }
+
+/* --- FILTROS DE BÚSQUEDA --- */
+.filtros-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap; /* Para que bajen a otra línea en celulares si no caben */
+}
+
+.btn-filtro {
+  background-color: white;
+  color: #1c5243;
+  border: 2px solid #1c5243;
+  padding: 8px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-filtro:hover {
+  background-color: #e2efeb;
+}
+
+/* El estilo de cuando el botón está presionado */
+.btn-filtro.activo {
+  background-color: #1c5243;
+  color: white;
+}
+
+/* --- MODO OSCURO PARA LOS FILTROS --- */
+body.dark-mode .btn-filtro {
+  background-color: #1e1e1e;
+  color: #4ade80;
+  border-color: #4ade80;
+}
+
+body.dark-mode .btn-filtro:hover {
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .btn-filtro.activo {
+  background-color: #4ade80;
+  color: #121212;
+}
