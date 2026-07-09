@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { supabase } from './supabaseClient';
 import './App.css';
 
 function App() {
-  // Estos son datos de prueba. Más adelante, estos datos vendrán de Supabase.
-  const animalitos = [
-    { id: 1, nombre: 'Manchas', especie: 'Perro', edad: '2 meses', img: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=60' },
-    { id: 2, nombre: 'Mishi', especie: 'Gato', edad: '1 año', img: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=500&q=60' },
-    { id: 3, nombre: 'Rocky', especie: 'Perro', edad: '3 años', img: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=500&q=60' },
-  ];
+  const [animalitos, setAnimalitos] = useState([]);
+  const [cargando, setCargando] = useState(true);
+
+  // Esta función hace la petición asíncrona a Supabase
+  const obtenerAnimales = async () => {
+    try {
+      setCargando(true);
+      const { data, error } = await supabase
+        .from('animales')
+        .select('*')
+        .eq('adoptado', false); // Solo trae los que no han sido adoptados
+
+      if (error) throw error;
+      setAnimalitos(data);
+    } catch (error) {
+      console.error('Error cargando los animalitos:', error.message);
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  // Ejecuta la función automáticamente cuando la página carga
+  useEffect(() => {
+    obtenerAnimales();
+  }, []);
 
   return (
     <div>
@@ -20,16 +40,28 @@ function App() {
         <h2>Animalitos en adopción</h2>
         <p>¡Conoce a los rescatados que estarán en nuestro evento de agosto!</p>
 
-        <div className="grid">
-          {animalitos.map((animal) => (
-            <div key={animal.id} className="card">
-              <img src={animal.img} alt={`Foto de ${animal.nombre}`} />
-              <h3>{animal.nombre}</h3>
-              <p>{animal.especie} - {animal.edad}</p>
-              <button className="btn">Quiero Adoptarlo</button>
-            </div>
-          ))}
-        </div>
+        {cargando ? (
+          <p style={{ textAlign: 'center' }}>Buscando peluditos...</p>
+        ) : animalitos.length === 0 ? (
+          <p style={{ textAlign: 'center' }}>Por el momento no hay animalitos registrados. ¡Pronto añadiremos más!</p>
+        ) : (
+          <div className="grid">
+            {animalitos.map((animal) => (
+              <div key={animal.id} className="card">
+                <img 
+                  src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'} 
+                  alt={`Foto de ${animal.nombre}`} 
+                />
+                <h3>{animal.nombre}</h3>
+                <p><strong>{animal.especie}</strong> - {animal.edad}</p>
+                <p style={{ padding: '0 10px', fontSize: '14px', color: '#555' }}>{animal.descripcion}</p>
+                <button className="btn" onClick={() => alert(`¡Gracias por tu interés en ${animal.nombre}! Comunícate con la Red Animalista.`)}>
+                  Quiero Adoptarlo
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
