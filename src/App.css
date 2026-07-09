@@ -8,7 +8,6 @@ body {
   padding: 0;
   background-color: #f4f7f6;
   color: #333;
-  
 }
 
 /* --- BARRA DE NAVEGACIÓN --- */
@@ -49,6 +48,39 @@ body {
   transition: background-color 0.8s ease; /* Transición suave de colores */
 }
 
+/* Flechas del Carrusel */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-arrow:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.slider-arrow.prev { left: 15px; }
+.slider-arrow.next { right: 15px; }
+
+/* Ocultar las flechas en pantallas MUY pequeñas para no tapar texto */
+@media (max-width: 480px) {
+  .slider-arrow {
+    display: none; 
+  }
+}
 .slider-content {
   max-width: 800px;
   width: 100%;
@@ -310,21 +342,29 @@ body.dark-mode .slider-info-box {
   z-index: 1000;
 }
 
+/* Para evitar que CUALQUIER cosa se salga de la pantalla en celular */
+body, html {
+  overflow-x: hidden;
+}
+
 .panel-lateral {
   position: fixed;
-  top: 0; right: -300px;
-  width: 250px; height: 100vh;
+  top: 0; 
+  right: 0; /* Lo anclamos a la derecha */
+  transform: translateX(100%); /* Lo empujamos fuera de la pantalla visualmente */
+  width: 250px; 
+  height: 100vh;
   background: white;
   box-shadow: -5px 0 15px rgba(0,0,0,0.1);
   padding: 2rem;
   z-index: 1001;
-  transition: right 0.3s ease;
+  transition: transform 0.3s ease;
   display: flex;
   flex-direction: column;
 }
 
 .panel-lateral.abierto {
-  right: 0;
+  transform: translateX(0); /* Lo traemos de vuelta a su lugar */
 }
 
 .cerrar-panel {
