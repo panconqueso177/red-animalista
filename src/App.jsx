@@ -3,6 +3,9 @@ import { supabase } from './supabaseClient';
 import AnimalCard from './components/AnimalCard';
 import ConfigMenu from './components/ConfigMenu';
 import './App.css';
+import HeroSlider from './components/HeroSlider';
+
+
 
 function App() {
   const [animalitos, setAnimalitos] = useState([]);
@@ -71,10 +74,8 @@ function App() {
         />
       </nav>
 
-      <header className="hero-banner">
-        <h1>Red Animalista de Manta</h1>
-        <p>Ayudando a peluditos en situación de calle a encontrar un hogar lleno de amor. Únete a nuestra causa y cambia una vida hoy.</p>
-      </header>
+{/* --- CARRUSEL DE NOTICIAS IMPORTANTES --- */}
+    <HeroSlider />
 
       <main className="container">
         <h2 className="section-title">Animalitos en Adopción</h2>
