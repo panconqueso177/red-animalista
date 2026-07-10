@@ -2,18 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 import AnimalCard from './components/AnimalCard';
 import ConfigMenu from './components/ConfigMenu';
-import './App.css';
 import HeroSlider from './components/HeroSlider';
-
-
+import AdminPanel from './components/AdminPanel'; // <-- IMPORTAMOS EL PANEL
+import './App.css';
 
 function App() {
   const [animalitos, setAnimalitos] = useState([]);
   const [cargando, setCargando] = useState(true);
-
-  // --- ESTADO DEL FILTRO ---
-  // Por defecto, queremos que se muestren "Todos"
   const [filtroEspecie, setFiltroEspecie] = useState('Todos');
+
+  // --- SISTEMA DE RUTAS POR HASH ---
+  const [rutaActual, setRutaActual] = useState(window.location.hash);
+
+  useEffect(() => {
+    const manejarCambioRuta = () => setRutaActual(window.location.hash);
+    window.addEventListener('hashchange', manejarCambioRuta);
+    return () => window.removeEventListener('hashchange', manejarCambioRuta);
+  }, []);
 
   // --- ESTADOS DE CONFIGURACIÓN ---
   const [modoOscuro, setModoOscuro] = useState(() => localStorage.getItem('tema') === 'oscuro');
@@ -50,18 +55,23 @@ function App() {
   };
 
   useEffect(() => {
-    obtenerAnimales();
-  }, []);
+    // Solo cargamos los animales si estamos en la vista pública
+    if (rutaActual !== '#admin') {
+      obtenerAnimales();
+    }
+  }, [rutaActual]);
 
-  // --- LÓGICA MÁGICA DEL FILTRO ---
-  // Creamos una nueva lista temporal dependiendo del botón presionado
   const animalitosFiltrados = animalitos.filter((animal) => {
     if (filtroEspecie === 'Todos') return true;
-    
-    // Convertimos todo a minúsculas por si en Supabase escribieron "Perro", "PERRO" o "perro"
     return animal.especie.toLowerCase() === filtroEspecie.toLowerCase();
   });
 
+  // --- CONDICIONAL DE RUTA: SI ES #admin, MUESTRA EL PANEL ---
+  if (rutaActual === '#admin') {
+    return <AdminPanel />;
+  }
+
+  // --- DE LO CONTRARIO, MUESTRA LA WEB PÚBLICA ---
   return (
     <div>
       <nav className="navbar">
@@ -74,30 +84,19 @@ function App() {
         />
       </nav>
 
-{/* --- CARRUSEL DE NOTICIAS IMPORTANTES --- */}
-    <HeroSlider />
+      <HeroSlider />
 
       <main className="container">
         <h2 className="section-title">Animalitos en Adopción</h2>
 
-        {/* --- BOTONES DE FILTRO --- */}
         <div className="filtros-container">
-          <button 
-            className={`btn-filtro ${filtroEspecie === 'Todos' ? 'activo' : ''}`} 
-            onClick={() => setFiltroEspecie('Todos')}
-          >
+          <button className={`btn-filtro ${filtroEspecie === 'Todos' ? 'activo' : ''}`} onClick={() => setFiltroEspecie('Todos')}>
             Todos
           </button>
-          <button 
-            className={`btn-filtro ${filtroEspecie === 'Perro' ? 'activo' : ''}`} 
-            onClick={() => setFiltroEspecie('Perro')}
-          >
+          <button className={`btn-filtro ${filtroEspecie === 'Perro' ? 'activo' : ''}`} onClick={() => setFiltroEspecie('Perro')}>
             Perritos
           </button>
-          <button 
-            className={`btn-filtro ${filtroEspecie === 'Gato' ? 'activo' : ''}`} 
-            onClick={() => setFiltroEspecie('Gato')}
-          >
+          <button className={`btn-filtro ${filtroEspecie === 'Gato' ? 'activo' : ''}`} onClick={() => setFiltroEspecie('Gato')}>
             Gatitos
           </button>
         </div>
@@ -108,7 +107,6 @@ function App() {
           <p style={{ textAlign: 'center' }}>No hay peluditos en esta categoría por ahora.</p>
         ) : (
           <div className="grid">
-            {/* Dibujamos la lista filtrada, NO la lista original */}
             {animalitosFiltrados.map((animal) => (
               <AnimalCard key={animal.id} animal={animal} ocultarFotos={ocultarFotos} />
             ))}
