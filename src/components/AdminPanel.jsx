@@ -74,7 +74,7 @@ function AdminPanel() {
 
       if (error) throw error;
 
-      setMensajeForm('🎉 ¡Mascota registrada con éxito!');
+      setMensajeForm('Registrado con éxito');
       // Limpiar el formulario
       setNombre('');
       setEdad('');
@@ -82,7 +82,7 @@ function AdminPanel() {
       setHistoria('');
       setFotoUrl('');
     } catch (error) {
-      setMensajeForm(`❌ Error al guardar: ${error.message}`);
+      setMensajeForm(`Error al guardar: ${error.message}`);
     } finally {
       setCargando(false);
     }
@@ -93,33 +93,33 @@ function AdminPanel() {
     return (
       <div className="admin-login-container">
         <form onSubmit={manejarLogin} className="admin-card-login">
-          <h2>Panel de Administración 🔐</h2>
+          <h2>Panel de Administración</h2>
           <p>Solo personal autorizado</p>
-          
+
           <div className="input-group">
             <label>Correo Electrónico</label>
-            <input 
-              type="email" 
-              required 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div className="input-group">
             <label>Contraseña</label>
-            <input 
-              type="password" 
-              required 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
           <button type="submit" className="btn" disabled={cargando}>
             {cargando ? 'Ingresando...' : 'Entrar'}
           </button>
-          
+
           <a href="#" className="volver-btn">⬅ Volver al sitio público</a>
         </form>
       </div>

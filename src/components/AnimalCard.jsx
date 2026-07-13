@@ -13,9 +13,9 @@ function AnimalCard({ animal, ocultarFotos }) {
       <div className="card">
         {/* El condicional: Si ocultarFotos es falso, muestra la imagen */}
         {!ocultarFotos && (
-          <img 
-            src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'} 
-            alt={`Foto de ${animal.nombre}`} 
+          <img
+            src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'}
+            alt={`Foto de ${animal.nombre}`}
           />
         )}
         <div className="card-content">
@@ -32,13 +32,13 @@ function AnimalCard({ animal, ocultarFotos }) {
         <div className="modal-overlay" onClick={cerrarModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-btn" onClick={cerrarModal}>✖</button>
-            
+
             <div className="modal-body">
               {/* El mismo condicional para la foto grande del modal */}
               {!ocultarFotos && (
-                <img 
-                  src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'} 
-                  alt={animal.nombre} 
+                <img
+                  src={animal.foto_url || 'https://via.placeholder.com/500x300?text=Sin+Foto'}
+                  alt={animal.nombre}
                   className="modal-img"
                 />
               )}
@@ -48,18 +48,18 @@ function AnimalCard({ animal, ocultarFotos }) {
                   <span className="badge">{animal.especie}</span>
                   <span className="badge">{animal.sexo || 'No especificado'}</span>
                 </div>
-                
+
                 <p><strong>Edad:</strong> {animal.edad}</p>
                 <p><strong>Raza:</strong> {animal.raza || 'No especificada'}</p>
-                
+
                 <h4>Mi historia:</h4>
                 <p className="historia-texto">
                   {animal.historia || 'Pronto te contaremos más sobre cómo fui rescatado.'}
                 </p>
-                
-                <button 
-                  className="btn btn-adoptar" 
-                  onClick={() => alert(`¡Qué emoción! Comunícate con la Red Animalista en Instagram/WhatsApp para adoptar a ${animal.nombre}.`)}
+
+                <button
+                  className="btn btn-adoptar"
+                  onClick={() => alert(`pipipopo ${animal.nombre}.`)}
                 >
                   ¡Quiero Adoptarlo!
                 </button>
