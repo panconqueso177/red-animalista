@@ -28,12 +28,12 @@ function HeroSlider() {
       descripcion: "Puedes contactarnos a traves de nuestras redes sociales.",
       infoExtra: (
         <span style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
-          <a href="https://www.instagram.com/redanimalistamanta/" target="_blank" rel="noopener noreferrer" style={{ color: "#154034", textDecoration: "underline", fontWeight: "bold" }}>Instagram</a>
+          <a href="https://www.instagram.com/redanimalistademanta/" target="_blank" rel="noopener noreferrer" style={{ color: "#154034", textDecoration: "underline", fontWeight: "bold" }}>Instagram</a>
           <span>|</span>
-          <a href="https://www.tiktok.com/@redanimalistamanta" target="_blank" rel="noopener noreferrer" style={{ color: "#154034", textDecoration: "underline", fontWeight: "bold" }}>TikTok</a>
+          <a href="https://www.tiktok.com/@red.animalista.de" target="_blank" rel="noopener noreferrer" style={{ color: "#154034", textDecoration: "underline", fontWeight: "bold" }}>TikTok</a>
         </span>
       ),
-      colorFondo: "#9b2c2c"
+      colorFondo: "#154034"
     }
   ];
 
@@ -76,7 +76,7 @@ function HeroSlider() {
   return (
     <div
       className="slider-container"
-      style={{ 
+      style={{
         backgroundImage: "url('/banner.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center"
@@ -86,8 +86,8 @@ function HeroSlider() {
       onTouchEnd={handleTouchEnd}
     >
       {/* Capa oscura superpuesta que mantiene la transición de colores suaves */}
-      <div 
-        className="slider-overlay" 
+      <div
+        className="slider-overlay"
         style={{ backgroundColor: slides[slideActual].colorFondo }}
       ></div>
 
