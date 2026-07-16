@@ -544,8 +544,10 @@ body.dark-mode .btn-filtro.activo {
     max-height: 85vh; /* Evita que se salga de la pantalla */
   }
   .modal-img {
+    max-width: 100%; /* Permite que la imagen ocupe todo el ancho en celulares */
     max-height: 250px; /* Limita el alto de la foto en celulares */
     object-fit: cover;
+    object-position: center; /* Asegura que la cara quede en medio */
   }
   .modal-info {
     padding: 1.5rem;
