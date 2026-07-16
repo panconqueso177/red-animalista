@@ -17,6 +17,10 @@ function AdminPanel() {
   const [archivoFoto, setArchivoFoto] = useState(null);
   const [mensajeForm, setMensajeForm] = useState('');
   const [animalesActivos, setAnimalesActivos] = useState([]);
+  
+  // Estado para saber si estamos editando
+  const [editandoId, setEditandoId] = useState(null);
+  const [fotoOriginal, setFotoOriginal] = useState('');
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -59,16 +63,15 @@ function AdminPanel() {
     setSesion(null);
   };
 
-  // Guardar nueva mascota en Supabase
   const manejarGuardarMascota = async (e) => {
     e.preventDefault();
     try {
       setCargando(true);
       setMensajeForm('');
       
-      let publicFotoUrl = '';
+      let publicFotoUrl = fotoOriginal; // Por defecto mantenemos la original si existe
 
-      // Subir foto si existe
+      // Subir foto si seleccionaron una nueva
       if (archivoFoto) {
         const fileExt = archivoFoto.name.split('.').pop();
         const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
@@ -82,29 +85,38 @@ function AdminPanel() {
         publicFotoUrl = urlData.publicUrl;
       }
 
-      const { error } = await supabase
-        .from('animales')
-        .insert([
-          {
-            nombre,
-            especie,
-            edad,
-            sexo,
-            raza,
-            historia,
-            foto_url: publicFotoUrl,
-            adoptado: false
-          }
-        ]);
+      const datosMascota = {
+        nombre,
+        especie,
+        edad,
+        sexo,
+        raza,
+        historia,
+        foto_url: publicFotoUrl
+      };
 
-      if (error) throw error;
+      if (editandoId) {
+        // ACTUALIZAR REGISTRO EXISTENTE
+        const { error } = await supabase
+          .from('animales')
+          .update(datosMascota)
+          .eq('id', editandoId);
+          
+        if (error) throw error;
+        setMensajeForm('Mascota actualizada con éxito');
+      } else {
+        // CREAR NUEVO REGISTRO
+        datosMascota.adoptado = false; // Solo al crear
+        const { error } = await supabase
+          .from('animales')
+          .insert([datosMascota]);
 
-      setMensajeForm('Registrado con éxito');
-      setNombre('');
-      setEdad('');
-      setRaza('');
-      setHistoria('');
-      setArchivoFoto(null);
+        if (error) throw error;
+        setMensajeForm('Registrado con éxito');
+      }
+
+      // Limpiar el formulario
+      limpiarFormulario();
       
       // Refrescar lista de animales
       obtenerAnimalesActivos();
@@ -113,6 +125,30 @@ function AdminPanel() {
     } finally {
       setCargando(false);
     }
+  };
+
+  const limpiarFormulario = () => {
+    setNombre('');
+    setEdad('');
+    setRaza('');
+    setHistoria('');
+    setArchivoFoto(null);
+    setEditandoId(null);
+    setFotoOriginal('');
+  };
+
+  const manejarEditar = (animal) => {
+    setNombre(animal.nombre);
+    setEspecie(animal.especie);
+    setEdad(animal.edad);
+    setSexo(animal.sexo);
+    setRaza(animal.raza || '');
+    setHistoria(animal.historia || '');
+    setFotoOriginal(animal.foto_url);
+    setEditandoId(animal.id);
+    
+    // Subir la pantalla suavemente para que vean el formulario
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const manejarAdoptado = async (id) => {
@@ -180,7 +216,7 @@ function AdminPanel() {
 
       <div className="admin-content">
         <form onSubmit={manejarGuardarMascota} className="admin-form">
-          <h3>Registrar Nuevo Peludito</h3>
+          <h3>{editandoId ? 'Editando Peludito' : 'Registrar Nuevo Peludito'}</h3>
           {mensajeForm && <p className="mensaje-alerta">{mensajeForm}</p>}
 
           <div className="form-grid">
@@ -216,19 +252,26 @@ function AdminPanel() {
             </div>
 
             <div className="input-group">
-              <label>Foto de la Mascota</label>
-              <input type="file" accept="image/*" onChange={(e) => setArchivoFoto(e.target.files[0])} />
+              <label>Foto de la Mascota {editandoId && '(Opcional: deja en blanco para mantener la actual)'}</label>
+              <input type="file" accept="image/*" onChange={(e) => setArchivoFoto(e.target.files[0])} required={!editandoId} />
             </div>
           </div>
 
           <div className="input-group full-width">
             <label>Su historia (Escribe algo lindo y emotivo)</label>
-            <textarea rows="4" value={historia} onChange={(e) => setHistoria(e.target.value)} />
+            <textarea rows="4" value={historia} onChange={(e) => setHistoria(e.target.value)} required />
           </div>
 
-          <button type="submit" className="btn" disabled={cargando}>
-            {cargando ? 'Guardando en la base de datos...' : 'Publicar Mascota'}
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button type="submit" className="btn" disabled={cargando} style={{ flexGrow: 1 }}>
+              {cargando ? 'Guardando en la base de datos...' : (editandoId ? 'Guardar Cambios' : 'Publicar Mascota')}
+            </button>
+            {editandoId && (
+              <button type="button" onClick={limpiarFormulario} className="btn" style={{ backgroundColor: '#ccc', color: '#333' }}>
+                Cancelar Edición
+              </button>
+            )}
+          </div>
         </form>
 
         <div className="admin-form" style={{ marginTop: '2rem' }}>
@@ -242,9 +285,14 @@ function AdminPanel() {
                   <div>
                     <strong>{animal.nombre}</strong> <span style={{ color: '#666', fontSize: '0.9rem' }}>({animal.especie})</span>
                   </div>
-                  <button onClick={() => manejarAdoptado(animal.id)} disabled={cargando} style={{ cursor: 'pointer', backgroundColor: '#4ade80', color: '#121212', fontWeight: 'bold', padding: '8px 15px', borderRadius: '8px', border: 'none', transition: 'transform 0.2s' }}>
-                    ¡Adoptado! 🎉
-                  </button>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button onClick={() => manejarEditar(animal)} disabled={cargando} style={{ cursor: 'pointer', backgroundColor: '#e2efeb', color: '#1c5243', fontWeight: 'bold', padding: '8px 15px', borderRadius: '8px', border: 'none', transition: 'transform 0.2s' }}>
+                      Editar ✏️
+                    </button>
+                    <button onClick={() => manejarAdoptado(animal.id)} disabled={cargando} style={{ cursor: 'pointer', backgroundColor: '#4ade80', color: '#121212', fontWeight: 'bold', padding: '8px 15px', borderRadius: '8px', border: 'none', transition: 'transform 0.2s' }}>
+                      ¡Adoptado! 🎉
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>
