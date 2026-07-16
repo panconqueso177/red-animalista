@@ -281,7 +281,7 @@ function AdminPanel() {
           ) : (
             <ul style={{ listStyle: 'none', padding: 0 }}>
               {animalesActivos.map(animal => (
-                <li key={animal.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 10px', borderBottom: '1px solid #e5e4e7' }}>
+                <li key={animal.id} className="admin-lista-item">
                   <div>
                     <strong>{animal.nombre}</strong> <span style={{ color: '#666', fontSize: '0.9rem' }}>({animal.especie})</span>
                   </div>

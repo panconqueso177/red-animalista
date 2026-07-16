@@ -688,9 +688,27 @@ body.dark-mode .btn-filtro.activo {
   gap: 15px;
 }
 
+.admin-lista-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px;
+  border-bottom: 1px solid #e5e4e7;
+}
+
 @media (max-width: 600px) {
   .form-grid {
     grid-template-columns: 1fr;
+  }
+  .admin-lista-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .admin-lista-item > div:last-child {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 }
 
