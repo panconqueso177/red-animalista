@@ -26,7 +26,13 @@ function HeroSlider() {
       id: 2,
       titulo: "¿Deseas ser parte del voluntariado?",
       descripcion: "Puedes contactarnos a traves de nuestras redes sociales.",
-      infoExtra: <span>Tenemos una <a href="https://chat.whatsapp.com/GwuORI5cOKE9T28mbaOeHm?s=qt&p=a&ilr=4&amv=1" target="_blank" rel="noopener noreferrer" style={{ color: "#154034", textDecoration: "underline", fontWeight: "bold" }}>Comunidad en Whatsapp</a></span>,
+      infoExtra: (
+        <span style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+          <a href="https://www.instagram.com/redanimalistamanta/" target="_blank" rel="noopener noreferrer" style={{ color: "#154034", textDecoration: "underline", fontWeight: "bold" }}>Instagram</a>
+          <span>|</span>
+          <a href="https://www.tiktok.com/@redanimalistamanta" target="_blank" rel="noopener noreferrer" style={{ color: "#154034", textDecoration: "underline", fontWeight: "bold" }}>TikTok</a>
+        </span>
+      ),
       colorFondo: "#9b2c2c"
     }
   ];
