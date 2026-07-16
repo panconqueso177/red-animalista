@@ -70,11 +70,21 @@ function HeroSlider() {
   return (
     <div
       className="slider-container"
-      style={{ backgroundColor: slides[slideActual].colorFondo }}
+      style={{ 
+        backgroundImage: "url('/banner.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center"
+      }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {/* Capa oscura superpuesta que mantiene la transición de colores suaves */}
+      <div 
+        className="slider-overlay" 
+        style={{ backgroundColor: slides[slideActual].colorFondo }}
+      ></div>
+
       {/* Flechas Laterales */}
       <button className="slider-arrow prev" onClick={irAnterior}>❮</button>
       <button className="slider-arrow next" onClick={irSiguiente}>❯</button>

@@ -14,21 +14,30 @@ function AdminPanel() {
   const [sexo, setSexo] = useState('Macho');
   const [raza, setRaza] = useState('');
   const [historia, setHistoria] = useState('');
-  const [fotoUrl, setFotoUrl] = useState('');
+  const [archivoFoto, setArchivoFoto] = useState(null);
   const [mensajeForm, setMensajeForm] = useState('');
+  const [animalesActivos, setAnimalesActivos] = useState([]);
 
-  // Comprobar si ya hay una sesión activa al cargar la página
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSesion(session);
+      if (session) obtenerAnimalesActivos();
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSesion(session);
+      if (session) obtenerAnimalesActivos();
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const obtenerAnimalesActivos = async () => {
+    const { data, error } = await supabase.from('animales').select('*').eq('adoptado', false);
+    if (!error && data) {
+      setAnimalesActivos(data);
+    }
+  };
 
   // Iniciar Sesión
   const manejarLogin = async (e) => {
@@ -56,6 +65,22 @@ function AdminPanel() {
     try {
       setCargando(true);
       setMensajeForm('');
+      
+      let publicFotoUrl = '';
+
+      // Subir foto si existe
+      if (archivoFoto) {
+        const fileExt = archivoFoto.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('mascotas')
+          .upload(fileName, archivoFoto);
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage.from('mascotas').getPublicUrl(fileName);
+        publicFotoUrl = urlData.publicUrl;
+      }
 
       const { error } = await supabase
         .from('animales')
@@ -67,7 +92,7 @@ function AdminPanel() {
             sexo,
             raza,
             historia,
-            foto_url: fotoUrl,
+            foto_url: publicFotoUrl,
             adoptado: false
           }
         ]);
@@ -75,14 +100,30 @@ function AdminPanel() {
       if (error) throw error;
 
       setMensajeForm('Registrado con éxito');
-      // Limpiar el formulario
       setNombre('');
       setEdad('');
       setRaza('');
       setHistoria('');
-      setFotoUrl('');
+      setArchivoFoto(null);
+      
+      // Refrescar lista de animales
+      obtenerAnimalesActivos();
     } catch (error) {
       setMensajeForm(`Error al guardar: ${error.message}`);
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  const manejarAdoptado = async (id) => {
+    if (!window.confirm("¿Estás seguro de marcar este animalito como adoptado?")) return;
+    try {
+      setCargando(true);
+      const { error } = await supabase.from('animales').update({ adoptado: true }).eq('id', id);
+      if (error) throw error;
+      obtenerAnimalesActivos();
+    } catch (error) {
+      alert(`Error al actualizar: ${error.message}`);
     } finally {
       setCargando(false);
     }
@@ -175,8 +216,8 @@ function AdminPanel() {
             </div>
 
             <div className="input-group">
-              <label>Enlace de la Foto (Supabase Public URL)</label>
-              <input type="text" value={fotoUrl} onChange={(e) => setFotoUrl(e.target.value)} placeholder="https://..." />
+              <label>Foto de la Mascota</label>
+              <input type="file" accept="image/*" onChange={(e) => setArchivoFoto(e.target.files[0])} />
             </div>
           </div>
 
@@ -189,6 +230,26 @@ function AdminPanel() {
             {cargando ? 'Guardando en la base de datos...' : 'Publicar Mascota'}
           </button>
         </form>
+
+        <div className="admin-form" style={{ marginTop: '2rem' }}>
+          <h3>Animalitos en adopción</h3>
+          {animalesActivos.length === 0 ? (
+            <p>No hay animales activos en este momento.</p>
+          ) : (
+            <ul style={{ listStyle: 'none', padding: 0 }}>
+              {animalesActivos.map(animal => (
+                <li key={animal.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 10px', borderBottom: '1px solid #e5e4e7' }}>
+                  <div>
+                    <strong>{animal.nombre}</strong> <span style={{ color: '#666', fontSize: '0.9rem' }}>({animal.especie})</span>
+                  </div>
+                  <button onClick={() => manejarAdoptado(animal.id)} disabled={cargando} style={{ cursor: 'pointer', backgroundColor: '#4ade80', color: '#121212', fontWeight: 'bold', padding: '8px 15px', borderRadius: '8px', border: 'none', transition: 'transform 0.2s' }}>
+                    ¡Adoptado! 🎉
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );

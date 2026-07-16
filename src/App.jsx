@@ -3,7 +3,7 @@ import { supabase } from './supabaseClient';
 import AnimalCard from './components/AnimalCard';
 import ConfigMenu from './components/ConfigMenu';
 import HeroSlider from './components/HeroSlider';
-import AdminPanel from './components/AdminPanel'; // <-- IMPORTAMOS EL PANEL
+import AdminPanel from './components/AdminPanel';
 import './App.css';
 
 function App() {
@@ -77,7 +77,7 @@ function App() {
       <nav className="navbar">
         <img src="/logo.png" alt="Logo Red Animalista" className="logo" />
         <h1 className="brand-title">Red Animalista de Manta</h1>
-        <ConfigMenu 
+        <ConfigMenu
           modoOscuro={modoOscuro} setModoOscuro={setModoOscuro}
           ocultarFotos={ocultarFotos} setOcultarFotos={setOcultarFotos}
           letraGrande={letraGrande} setLetraGrande={setLetraGrande}

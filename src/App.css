@@ -1,13 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
+
 /* src/App.css - ESTILOS COMPLETOS */
 
 /* --- GENERAL --- */
 body {
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Fredoka', system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f7f6;
   color: #333;
+  /* Patrón de huellitas sutiles en línea (No requiere archivo de imagen externo) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%231c5243' fill-opacity='0.04'%3E%3Cpath d='M30.6,44.9c-4.4,0-8.2-5.4-8.6-12c-0.3-6.6,2.9-12.2,7.3-12.2s8.2,5.4,8.6,12C38.2,39.3,35,44.9,30.6,44.9z M68.8,45c-4.4,0-7.7-5.6-7.3-12.2c0.3-6.6,4.1-12,8.6-12s7.7,5.6,7.3,12.2C77,39.5,73.2,45,68.8,45z M14,64.2c-4.1,1.5-8.8-1.5-10.4-6.8c-1.6-5.3,0.3-10.9,4.4-12.3c4.1-1.5,8.8,1.5,10.4,6.8C20.1,57.1,18.1,62.7,14,64.2z M85.2,64.3c-4.1-1.5-6.1-7.1-4.4-12.3c1.6-5.3,6.3-8.3,10.4-6.8c4.1,1.5,6.1,7.1,4.4,12.3C94,62.8,89.3,65.8,85.2,64.3z M49.5,92.1c-14.7,0-26.6-8.7-28.5-20.9c-2-12.8,8-22.6,20.8-24.1c11.6-1.4,22.1,8.3,24.1,21.1C68.1,82.1,58.7,92.1,49.5,92.1z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100px 100px;
 }
 
 /* --- BARRA DE NAVEGACIÓN --- */
@@ -45,7 +50,18 @@ body {
   color: white;
   text-align: center;
   padding: 4rem 2rem;
-  transition: background-color 0.8s ease; /* Transición suave de colores */
+}
+
+/* Capa de color con transparencia que se pone sobre el banner.jpg */
+.slider-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85; /* Ajuste para que se vea el fondo sin tapar las letras */
+  transition: background-color 0.8s ease;
+  z-index: 1;
 }
 
 /* Flechas del Carrusel */
@@ -84,6 +100,8 @@ body {
 .slider-content {
   max-width: 800px;
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .slider-content h1 {
@@ -132,6 +150,7 @@ body.dark-mode .slider-info-box {
   bottom: 20px;
   display: flex;
   gap: 10px;
+  z-index: 2;
 }
 
 .dot {
@@ -395,6 +414,7 @@ body, html {
 body.dark-mode {
   background-color: #121212;
   color: #e0e0e0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%234ade80' fill-opacity='0.04'%3E%3Cpath d='M30.6,44.9c-4.4,0-8.2-5.4-8.6-12c-0.3-6.6,2.9-12.2,7.3-12.2s8.2,5.4,8.6,12C38.2,39.3,35,44.9,30.6,44.9z M68.8,45c-4.4,0-7.7-5.6-7.3-12.2c0.3-6.6,4.1-12,8.6-12s7.7,5.6,7.3,12.2C77,39.5,73.2,45,68.8,45z M14,64.2c-4.1,1.5-8.8-1.5-10.4-6.8c-1.6-5.3,0.3-10.9,4.4-12.3c4.1-1.5,8.8,1.5,10.4,6.8C20.1,57.1,18.1,62.7,14,64.2z M85.2,64.3c-4.1-1.5-6.1-7.1-4.4-12.3c1.6-5.3,6.3-8.3,10.4-6.8c4.1,1.5,6.1,7.1,4.4,12.3C94,62.8,89.3,65.8,85.2,64.3z M49.5,92.1c-14.7,0-26.6-8.7-28.5-20.9c-2-12.8,8-22.6,20.8-24.1c11.6-1.4,22.1,8.3,24.1,21.1C68.1,82.1,58.7,92.1,49.5,92.1z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 body.dark-mode .navbar, 
