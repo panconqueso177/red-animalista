@@ -33,7 +33,7 @@ function HeroSlider() {
           <a href="https://www.tiktok.com/@red.animalista.de" target="_blank" rel="noopener noreferrer" style={{ color: "#154034", textDecoration: "underline", fontWeight: "bold" }}>TikTok</a>
         </span>
       ),
-      colorFondo: "#154034"
+      colorFondo: "#10382dff"
     }
   ];
 
