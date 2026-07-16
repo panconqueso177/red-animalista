@@ -47,7 +47,7 @@ function HeroSlider() {
 
   // Temporizador automático
   useEffect(() => {
-    const intervalo = setInterval(irSiguiente, 5000);
+    const intervalo = setInterval(irSiguiente, 8000);
     return () => clearInterval(intervalo);
   }, [slides.length]);
 
