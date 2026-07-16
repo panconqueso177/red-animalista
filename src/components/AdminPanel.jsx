@@ -14,6 +14,7 @@ function AdminPanel() {
   const [sexo, setSexo] = useState('Macho');
   const [raza, setRaza] = useState('');
   const [historia, setHistoria] = useState('');
+  const [consideraciones, setConsideraciones] = useState('');
   const [archivoFoto, setArchivoFoto] = useState(null);
   const [mensajeForm, setMensajeForm] = useState('');
   const [animalesActivos, setAnimalesActivos] = useState([]);
@@ -92,6 +93,7 @@ function AdminPanel() {
         sexo,
         raza,
         historia,
+        consideraciones,
         foto_url: publicFotoUrl
       };
 
@@ -132,6 +134,7 @@ function AdminPanel() {
     setEdad('');
     setRaza('');
     setHistoria('');
+    setConsideraciones('');
     setArchivoFoto(null);
     setEditandoId(null);
     setFotoOriginal('');
@@ -144,6 +147,7 @@ function AdminPanel() {
     setSexo(animal.sexo);
     setRaza(animal.raza || '');
     setHistoria(animal.historia || '');
+    setConsideraciones(animal.consideraciones || '');
     setFotoOriginal(animal.foto_url);
     setEditandoId(animal.id);
 
@@ -252,9 +256,14 @@ function AdminPanel() {
             </div>
 
             <div className="input-group">
-              <label>Foto de la Mascota {editandoId && '(Opcional: deja en blanco para mantener la actual)'}</label>
+              <label>Foto de la Mascota {editandoId && '(Opcional)'}</label>
               <input type="file" accept="image/*" onChange={(e) => setArchivoFoto(e.target.files[0])} required={!editandoId} />
             </div>
+          </div>
+
+          <div className="input-group full-width">
+            <label>Consideraciones médicas/especiales (Opcional)</label>
+            <textarea rows="2" value={consideraciones} onChange={(e) => setConsideraciones(e.target.value)} placeholder="Ej: Necesita medicación diaria, no convive con gatos..." />
           </div>
 
           <div className="input-group full-width">

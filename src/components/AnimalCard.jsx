@@ -52,6 +52,13 @@ function AnimalCard({ animal, ocultarFotos }) {
                 <p><strong>Edad:</strong> {animal.edad}</p>
                 <p><strong>Raza:</strong> {animal.raza || 'No especificada'}</p>
 
+                {animal.consideraciones && (
+                  <div className="consideraciones-box">
+                    <strong>⚠️ Consideraciones Especiales:</strong>
+                    <p>{animal.consideraciones}</p>
+                  </div>
+                )}
+
                 <h4>Mi historia:</h4>
                 <p className="historia-texto">
                   {animal.historia || 'Pronto te contaremos más sobre cómo fui rescatado.'}
