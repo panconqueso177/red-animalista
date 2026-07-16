@@ -17,7 +17,7 @@ function AdminPanel() {
   const [archivoFoto, setArchivoFoto] = useState(null);
   const [mensajeForm, setMensajeForm] = useState('');
   const [animalesActivos, setAnimalesActivos] = useState([]);
-  
+
   // Estado para saber si estamos editando
   const [editandoId, setEditandoId] = useState(null);
   const [fotoOriginal, setFotoOriginal] = useState('');
@@ -68,7 +68,7 @@ function AdminPanel() {
     try {
       setCargando(true);
       setMensajeForm('');
-      
+
       let publicFotoUrl = fotoOriginal; // Por defecto mantenemos la original si existe
 
       // Subir foto si seleccionaron una nueva
@@ -101,7 +101,7 @@ function AdminPanel() {
           .from('animales')
           .update(datosMascota)
           .eq('id', editandoId);
-          
+
         if (error) throw error;
         setMensajeForm('Mascota actualizada con éxito');
       } else {
@@ -117,7 +117,7 @@ function AdminPanel() {
 
       // Limpiar el formulario
       limpiarFormulario();
-      
+
       // Refrescar lista de animales
       obtenerAnimalesActivos();
     } catch (error) {
@@ -146,7 +146,7 @@ function AdminPanel() {
     setHistoria(animal.historia || '');
     setFotoOriginal(animal.foto_url);
     setEditandoId(animal.id);
-    
+
     // Subir la pantalla suavemente para que vean el formulario
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -207,7 +207,7 @@ function AdminPanel() {
   return (
     <div className="admin-dashboard">
       <div className="admin-header">
-        <h2>Panel de Control 🐾</h2>
+        <h2>Panel de Control </h2>
         <div>
           <a href="#" className="btn-secundario">Ver Sitio</a>
           <button onClick={manejarLogout} className="btn-logout">Cerrar Sesión</button>
@@ -287,10 +287,10 @@ function AdminPanel() {
                   </div>
                   <div style={{ display: 'flex', gap: '10px' }}>
                     <button onClick={() => manejarEditar(animal)} disabled={cargando} style={{ cursor: 'pointer', backgroundColor: '#e2efeb', color: '#1c5243', fontWeight: 'bold', padding: '8px 15px', borderRadius: '8px', border: 'none', transition: 'transform 0.2s' }}>
-                      Editar ✏️
+                      Editar
                     </button>
                     <button onClick={() => manejarAdoptado(animal.id)} disabled={cargando} style={{ cursor: 'pointer', backgroundColor: '#4ade80', color: '#121212', fontWeight: 'bold', padding: '8px 15px', borderRadius: '8px', border: 'none', transition: 'transform 0.2s' }}>
-                      ¡Adoptado! 🎉
+                      ¡Adoptado!
                     </button>
                   </div>
                 </li>
