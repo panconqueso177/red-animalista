@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-about">
           <h3>Red Animalista Manta</h3>
-          <p>Ayudando vidas, creando consciencia y buscando un hogar para los más necesitados.</p>
+          <p>Ellos no pueden pedir ayuda, pero tu si.</p>
         </div>
 
         <div className="footer-contact">
