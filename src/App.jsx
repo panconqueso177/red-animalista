@@ -4,6 +4,10 @@ import AnimalCard from './components/AnimalCard';
 import ConfigMenu from './components/ConfigMenu';
 import HeroSlider from './components/HeroSlider';
 import AdminPanel from './components/AdminPanel';
+import AboutUs from './components/AboutUs';
+import HowToHelp from './components/HowToHelp';
+import FAQ from './components/FAQ';
+import Footer from './components/Footer';
 import './App.css';
 
 function App() {
@@ -86,6 +90,12 @@ function App() {
 
       <HeroSlider />
 
+      <AboutUs />
+
+      <HowToHelp />
+      
+      <FAQ />
+
       <main className="container">
         <h2 className="section-title">Animalitos en Adopción</h2>
 
@@ -113,6 +123,8 @@ function App() {
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   );
 }

@@ -50,8 +50,8 @@ function ConfigMenu({
 
         <div className="redes-sociales">
           <h4>Nuestras Redes</h4>
-          <a href="#" target="_blank" rel="noreferrer">📷 Instagram</a>
-          <a href="#" target="_blank" rel="noreferrer">📘 Facebook</a>
+          <a href="https://www.instagram.com/redanimalistademanta/" target="_blank" rel="noreferrer">📷 Instagram</a>
+          <a href="https://www.tiktok.com/@red.animalista.de" target="_blank" rel="noreferrer">🎵 TikTok</a>
         </div>
       </div>
 

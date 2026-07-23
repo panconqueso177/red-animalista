@@ -47,9 +47,9 @@ function HeroSlider() {
 
   // Temporizador automático
   useEffect(() => {
-    const intervalo = setInterval(irSiguiente, 8000);
+    const intervalo = setInterval(irSiguiente, 12000);
     return () => clearInterval(intervalo);
-  }, [slides.length]);
+  }, [slideActual]);
 
   // --- LÓGICA TÁCTIL (SWIPE) ---
   const handleTouchStart = (e) => {
